@@ -3,6 +3,8 @@ package com.example.orders_klimov;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    EditText fio;
+    EditText phone;
+    EditText address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,5 +44,18 @@ public class MainActivity extends AppCompatActivity {
                         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void OnArrange(View view) {
+        fio = findViewById(R.id.fio);
+        phone = findViewById(R.id.number);
+        address = findViewById(R.id.address);
+
+        if (fio.getText().length() == 0) AlertDialog("Уведомление", "Пожалуйста, укажите фамилию, имя и отчество.");
+        else if (phone.getText().length() == 0) AlertDialog("Уведомление", "Пожалуйста, укажите номер телефона.");
+        else if (address.getText().length() == 0) AlertDialog("Уведомление", "Пожалуйста, укажите адрес доставки.");
+        else  {
+            AlertDialog("Уведомление", "Заказ оформлен.");
+        }
     }
 }
