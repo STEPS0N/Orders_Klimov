@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import kotlin.text.Regex;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText fio;
@@ -46,16 +48,43 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    public void AlertDialogConfirm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Подтверждение заказа")
+                .setMessage("Подтверждаете заказ?")
+                .setCancelable(false)
+                .setPositiveButton("Подтвердить",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AlertDialog("Уведомление", "Заказ оформлен");
+                                fio.setText("");
+                                phone.setText("");
+                                address.setText("");
+                            }
+                        })
+                .setNegativeButton("Отмена",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     public void OnArrange(View view) {
         fio = findViewById(R.id.fio);
         phone = findViewById(R.id.number);
         address = findViewById(R.id.address);
 
         if (fio.getText().length() == 0) AlertDialog("Уведомление", "Пожалуйста, укажите фамилию, имя и отчество.");
-        else if (phone.getText().length() == 0) AlertDialog("Уведомление", "Пожалуйста, укажите номер телефона.");
+        else if (phone.getText().length() == 0 || !phone.getText().toString().matches("^8 \\(9\\d{2}\\)-\\d{3}-\\d{2}-\\d{2}$"))
+            AlertDialog("Уведомление", "Пожалуйста, укажите номер телефона. Формат 8 (9xx)-xxx-xx-xx");
         else if (address.getText().length() == 0) AlertDialog("Уведомление", "Пожалуйста, укажите адрес доставки.");
         else  {
-            AlertDialog("Уведомление", "Заказ оформлен.");
+            AlertDialogConfirm();
         }
     }
 }
